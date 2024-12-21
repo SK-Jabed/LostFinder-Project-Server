@@ -31,6 +31,7 @@ async function run() {
     // const userCollection = client.db("campaignDB").collection("users");
     // const donationCollection = client.db("campaignDB").collection("donations");
 
+    // Get ALL Items from Database (GET Operation)
     // app.get("/campaigns", async (req, res) => {
     //   const cursor = campaignCollection.find();
     //   const result = await cursor.toArray();
