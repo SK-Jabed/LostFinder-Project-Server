@@ -26,7 +26,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    // const campaignCollection = client.db("campaignDB").collection("campaigns");
+    // Database Collections on MongoDB 
+    const itemCollection = client.db("lostFinderDB").collection("items");
     // const userCollection = client.db("campaignDB").collection("users");
     // const donationCollection = client.db("campaignDB").collection("donations");
 
