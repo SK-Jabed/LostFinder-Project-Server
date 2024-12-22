@@ -28,7 +28,7 @@ async function run() {
 
     // Database Collections on MongoDB 
     const itemCollection = client.db("lostFinderDB").collection("items");
-    
+
     // const userCollection = client.db("campaignDB").collection("users");
     // const donationCollection = client.db("campaignDB").collection("donations");
 
@@ -55,6 +55,7 @@ async function run() {
     //   res.send(result);
     // });
 
+    // Save All Added Items to Database (POST Operation)
     // app.post("/campaigns", async (req, res) => {
     //   const newCampaign = req.body;
     //   const result = await campaignCollection.insertOne(newCampaign);
