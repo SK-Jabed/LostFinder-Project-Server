@@ -26,18 +26,11 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    // Database Collections on MongoDB 
+    // Database Collections on MongoDB
     const itemCollection = client.db("lostFinderDB").collection("items");
 
     // const userCollection = client.db("campaignDB").collection("users");
     // const donationCollection = client.db("campaignDB").collection("donations");
-
-    // Get ALL Items from Database (GET Operation)
-    // app.get("/campaigns", async (req, res) => {
-    //   const cursor = campaignCollection.find();
-    //   const result = await cursor.toArray();
-    //   res.send(result);
-    // });
 
     // app.get("/runningCampaigns", async (req, res) => {
     //   const currentDate = new Date();
@@ -55,12 +48,19 @@ async function run() {
     //   res.send(result);
     // });
 
-    // Save All Added Items to Database (POST Operation)
-    // app.post("/campaigns", async (req, res) => {
-    //   const newCampaign = req.body;
-    //   const result = await campaignCollection.insertOne(newCampaign);
-    //   res.send(result);
-    // });
+    // Save an Added Item to Database (POST Operation)
+    app.post("/addItems", async (req, res) => {
+      const itemData = req.body;
+      const addedItem = await itemCollection.insertOne(itemData);
+      res.send(addedItem);
+    });
+
+    // Get ALL Items Data from Database (GET Operation)
+    app.get("/allItems", async (req, res) => {
+      const cursor = itemCollection.find();
+      const allItems = await cursor.toArray();
+      res.send(allItems);
+    });
 
     // // User Related API
     // app.get("/users", async (req, res) => {
