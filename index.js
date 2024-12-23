@@ -62,6 +62,40 @@ async function run() {
       res.send(allItems);
     });
 
+    // Get the latest 6 items sorted by most recent date
+    app.get("/latestItems", async (req, res) => {
+      const cursor = itemCollection
+        .find()
+        .sort({ postedAt: -1 }) // Sort by createdAt in descending order
+        .limit(6); // Limit to 6 items
+      const latestItems = await cursor.toArray();
+      res.send(latestItems);
+    });
+
+    // Get All Jobs Posted by a Specific User
+    app.get("/jobs/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { "buyer.email": email };
+      const postedJobs = await jobsCollection.find(query).toArray();
+      res.send(postedJobs);
+    });
+
+    // app.patch("/updateMissingTimestamps", async (req, res) => {
+    //   try {
+    //     const result = await itemCollection.updateMany(
+    //       { createdAt: { $exists: false } }, // Find documents without a createdAt field
+    //       { $set: { createdAt: new Date() } } // Set the createdAt field to the current date
+    //     );
+    //     res.send({
+    //       message: `${result.modifiedCount} documents were updated.`,
+    //       success: true,
+    //     });
+    //   } catch (error) {
+    //     console.error("Error updating timestamps:", error);
+    //     res.status(500).send({ error: "Failed to update timestamps" });
+    //   }
+    // });
+
     // // User Related API
     // app.get("/users", async (req, res) => {
     //   const cursor = userCollection.find();
