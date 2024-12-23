@@ -80,6 +80,14 @@ async function run() {
       res.send(postedItems);
     });
 
+    // Delete a Item from DB (DELETE Operation)
+    app.delete("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const deletedItem = await itemCollection.deleteOne(query);
+      res.send(deletedItem);
+    });
+
     // app.patch("/updateMissingTimestamps", async (req, res) => {
     //   try {
     //     const result = await itemCollection.updateMany(
