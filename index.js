@@ -72,12 +72,12 @@ async function run() {
       res.send(latestItems);
     });
 
-    // Get All Jobs Posted by a Specific User
-    app.get("/jobs/:email", async (req, res) => {
+    // Get All Items Posted by a Specific User
+    app.get("/allItems/:email", async (req, res) => {
       const email = req.params.email;
-      const query = { "buyer.email": email };
-      const postedJobs = await jobsCollection.find(query).toArray();
-      res.send(postedJobs);
+      const query = { "contactInfo.email": email };
+      const postedItems = await itemCollection.find(query).toArray();
+      res.send(postedItems);
     });
 
     // app.patch("/updateMissingTimestamps", async (req, res) => {
