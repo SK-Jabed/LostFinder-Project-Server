@@ -80,6 +80,31 @@ async function run() {
       res.send(postedItems);
     });
 
+    // Get a Single Item Data by Id from DB
+    app.get("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const singleItem = await itemCollection.findOne(query);
+      res.send(singleItem);
+    });
+
+    // Update a Job Data in DB (PUT Operation)
+    app.put("/updateItem/:id", async (req, res) => {
+      const itemData = req.body;
+      const id = req.params.id;
+      const updatedDoc = {
+        $set: itemData,
+      };
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedItem = await itemCollection.updateOne(
+        query,
+        updatedDoc,
+        options
+      );
+      res.send(updatedItem);
+    });
+
     // Delete a Item from DB (DELETE Operation)
     app.delete("/item/:id", async (req, res) => {
       const id = req.params.id;
@@ -87,7 +112,6 @@ async function run() {
       const deletedItem = await itemCollection.deleteOne(query);
       res.send(deletedItem);
     });
-    
 
     // app.patch("/updateMissingTimestamps", async (req, res) => {
     //   try {
