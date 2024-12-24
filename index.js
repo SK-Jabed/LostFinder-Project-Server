@@ -28,6 +28,9 @@ async function run() {
 
     // Database Collections on MongoDB
     const itemCollection = client.db("lostFinderDB").collection("items");
+    const recoveryCollection = client
+      .db("lostFinderDB")
+      .collection("recoveries");
 
     // const userCollection = client.db("campaignDB").collection("users");
     // const donationCollection = client.db("campaignDB").collection("donations");
@@ -111,6 +114,46 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const deletedItem = await itemCollection.deleteOne(query);
       res.send(deletedItem);
+    });
+
+    // Recover an Item and Update Status
+    // app.post("/recoverItem", async (req, res) => {
+    //   const { itemId, recoveredLocation, recoveredDate, recoveredBy } =
+    //     req.body;
+    //   const query = { _id: new ObjectId(itemId), status: { $ne: "recovered" } };
+    //   const update = {
+    //     $set: {
+    //       status: "recovered",
+    //       recoveredLocation,
+    //       recoveredDate,
+    //       recoveredBy,
+    //     },
+    //   };
+
+    //   const result = await itemCollection.updateOne(query, update);
+    //   if (result.matchedCount === 0) {
+    //     return res
+    //       .status(400)
+    //       .send({
+    //         success: false,
+    //         message: "Item is already recovered or not found.",
+    //       });
+    //   }
+    //   res.send({ success: true, message: "Item recovered successfully." });
+    // });
+
+    app.post("/recoverItem", async (req, res) => {
+      const recoveryData = req.body;
+
+      const result = await recoveryCollection.insertOne(recoveryData);
+      res.send(result);
+    });
+
+    // Get ALL Items Data from Database (GET Operation)
+    app.get("/recoveries", async (req, res) => {
+      const cursor = recoveryCollection.find();
+      const allRecoveredItems = await cursor.toArray();
+      res.send(allRecoveredItems);
     });
 
     // app.patch("/updateMissingTimestamps", async (req, res) => {
