@@ -178,7 +178,6 @@ The backend architecture ensures fast and reliable API responses, making the use
 
 
 
-
 # LostFinder - Backend Service
 
 ## Purpose
