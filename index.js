@@ -135,8 +135,13 @@ async function run() {
     // Get All Items Posted by a Specific User
     app.get("/allItems/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
+      const decodedEmail = req.user?.email;
+
+      if (decodedEmail !== email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
       const query = { "contactInfo.email": email };
-      console.log(req.cookies?.token);
       const postedItems = await itemCollection.find(query).toArray();
       res.send(postedItems);
     });
