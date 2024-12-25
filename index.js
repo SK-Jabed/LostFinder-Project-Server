@@ -9,9 +9,34 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: ["http://localhost:5173"],
+  credentials: true,
+  optionalSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+// Verify Token
+const verifyToken = (req, res, next) => {
+  const token = req?.cookies?.token;
+
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized Access" });
+  }
+
+  // Verify The Token
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "Unauthorized Access" });
+    }
+
+    req.user = decoded;
+    next();
+  });
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.baizo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -54,7 +79,7 @@ async function run() {
     //   res.send(result);
     // });
 
-    // Auth Related API
+    // Auth Related API (Generate JWT & Create Token)
     app.post("/jwt", (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
@@ -65,21 +90,23 @@ async function run() {
         .cookie("token", token, {
           httpOnly: true,
           secure: false,
-        //   secure: process.env.NODE_ENV === "production",
-        //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+          //   secure: process.env.NODE_ENV === "production",
+          //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
         .send({ success: true });
     });
 
-    // app.post("/logout", (req, res) => {
-    //   res
-    //     .clearCookie("token", {
-    //       httpOnly: true,
-    //       secure: process.env.NODE_ENV === "production",
-    //       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-    //     })
-    //     .send({ success: true });
-    // });
+    // Logout || Clear Cookie from Browser
+    app.post("/logout", (req, res) => {
+      res
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: false,
+          //   secure: process.env.NODE_ENV === "production",
+          //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
+        .send({ success: true });
+    });
 
     // Save an Added Item to Database (POST Operation)
     app.post("/addItems", async (req, res) => {
@@ -106,9 +133,10 @@ async function run() {
     });
 
     // Get All Items Posted by a Specific User
-    app.get("/allItems/:email", async (req, res) => {
+    app.get("/allItems/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
       const query = { "contactInfo.email": email };
+      console.log(req.cookies?.token);
       const postedItems = await itemCollection.find(query).toArray();
       res.send(postedItems);
     });
