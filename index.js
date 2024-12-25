@@ -54,6 +54,33 @@ async function run() {
     //   res.send(result);
     // });
 
+    // Auth Related API
+    app.post("/jwt", (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "30d",
+      });
+
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+        //   secure: process.env.NODE_ENV === "production",
+        //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
+        .send({ success: true });
+    });
+
+    // app.post("/logout", (req, res) => {
+    //   res
+    //     .clearCookie("token", {
+    //       httpOnly: true,
+    //       secure: process.env.NODE_ENV === "production",
+    //       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    //     })
+    //     .send({ success: true });
+    // });
+
     // Save an Added Item to Database (POST Operation)
     app.post("/addItems", async (req, res) => {
       const itemData = req.body;
@@ -158,8 +185,6 @@ async function run() {
       const allRecoveredItems = await cursor.toArray();
       res.send(allRecoveredItems);
     });
-
-    
 
     // app.patch("/updateMissingTimestamps", async (req, res) => {
     //   try {
