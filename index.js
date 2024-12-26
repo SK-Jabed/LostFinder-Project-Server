@@ -10,7 +10,11 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "http://localhost:5173",
+    "https://b10-assignment-11-753d2.web.app",
+    "https://b10-assignment-11-753d2.firebaseapp.com",
+  ],
   credentials: true,
   optionalSuccessStatus: 200,
 };
@@ -89,9 +93,8 @@ async function run() {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: false,
-          //   secure: process.env.NODE_ENV === "production",
-          //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
         .send({ success: true });
     });
@@ -101,9 +104,8 @@ async function run() {
       res
         .clearCookie("token", {
           httpOnly: true,
-          secure: false,
-          //   secure: process.env.NODE_ENV === "production",
-          //   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
         .send({ success: true });
     });
@@ -217,6 +219,20 @@ async function run() {
       const cursor = recoveryCollection.find();
       const allRecoveredItems = await cursor.toArray();
       res.send(allRecoveredItems);
+    });
+
+    // Get All Items Posted by a Specific User
+    app.get("/recoveries/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const decodedEmail = req.user?.email;
+
+      if (decodedEmail !== email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
+      const query = { "recoveredBy.email": email };
+      const recoveredItems = await recoveryCollection.find(query).toArray();
+      res.send(recoveredItems);
     });
 
     // app.patch("/updateMissingTimestamps", async (req, res) => {
