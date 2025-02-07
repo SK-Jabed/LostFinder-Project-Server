@@ -1,5 +1,7 @@
 # **LostFinder - Server-Side** 🚀🛠️
 
+![LostFinder Banner](https://github.com/SK-Jabed/LostFinder-Project-Client/blob/6cf0178c021d12582d31fc8afb17cbd6113f58c2/src/assets/Readme-pic.png)
+
 ## 📄 **Project Overview**  
 LostFinder's backend is a **robust, scalable, and efficient** server-side implementation designed to handle **authentication, item management, and real-time notifications** for lost and found items.  
 
