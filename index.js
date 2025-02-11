@@ -218,36 +218,6 @@ async function run() {
       res.send(recoveredItems);
     });
 
-    // app.patch("/updateMissingTimestamps", async (req, res) => {
-    //   try {
-    //     const result = await itemCollection.updateMany(
-    //       { createdAt: { $exists: false } }, // Find documents without a createdAt field
-    //       { $set: { createdAt: new Date() } } // Set the createdAt field to the current date
-    //     );
-    //     res.send({
-    //       message: `${result.modifiedCount} documents were updated.`,
-    //       success: true,
-    //     });
-    //   } catch (error) {
-    //     console.error("Error updating timestamps:", error);
-    //     res.status(500).send({ error: "Failed to update timestamps" });
-    //   }
-    // });
-
-    // // User Related API
-    // app.get("/users", async (req, res) => {
-    //   const cursor = userCollection.find();
-    //   const result = await cursor.toArray();
-    //   res.send(result);
-    // });
-
-    // app.get("/users/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await campaignCollection.findOne(query);
-    //   res.send(result);
-    // });
-
     // app.get("/myCampaigns", async (req, res) => {
     //   const userEmail = req.query.email;
     //   const campaigns = await campaignCollection.find({ userEmail }).toArray();
