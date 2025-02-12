@@ -212,7 +212,6 @@ async function run() {
       if (decodedEmail !== email) {
         return res.status(403).send({ message: "Forbidden Access" });
       }
-
       const query = { "recoveredBy.email": email };
       const recoveredItems = await recoveryCollection.find(query).toArray();
       res.send(recoveredItems);
