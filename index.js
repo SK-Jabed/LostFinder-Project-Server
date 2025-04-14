@@ -163,32 +163,7 @@ async function run() {
       res.send(deletedItem);
     });
 
-    // Recover an Item and Update Status
-    // app.post("/recoverItem", async (req, res) => {
-    //   const { itemId, recoveredLocation, recoveredDate, recoveredBy } =
-    //     req.body;
-    //   const query = { _id: new ObjectId(itemId), status: { $ne: "recovered" } };
-    //   const update = {
-    //     $set: {
-    //       status: "recovered",
-    //       recoveredLocation,
-    //       recoveredDate,
-    //       recoveredBy,
-    //     },
-    //   };
-
-    //   const result = await itemCollection.updateOne(query, update);
-    //   if (result.matchedCount === 0) {
-    //     return res
-    //       .status(400)
-    //       .send({
-    //         success: false,
-    //         message: "Item is already recovered or not found.",
-    //       });
-    //   }
-    //   res.send({ success: true, message: "Item recovered successfully." });
-    // });
-
+    
     // Add or Insert Data of Recovered Items to Database
     app.post("/recoverItem", async (req, res) => {
       const recoveryData = req.body;
