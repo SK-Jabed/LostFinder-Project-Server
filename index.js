@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
@@ -111,7 +111,7 @@ async function run() {
       const cursor = itemCollection
         .find()
         .sort({ postedAt: -1 }) // Sort by createdAt in descending order
-        .limit(6); // Limit to 6 items
+        .limit(6);
       const latestItems = await cursor.toArray();
       res.send(latestItems);
     });
