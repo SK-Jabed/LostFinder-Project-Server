@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "Sheikh Jabed",
   "license": "ISC",
-  "description": "This is Server Side of Assignment 10",
+  "description": "This is Server Side of LostFinder",
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
