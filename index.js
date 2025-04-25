@@ -108,10 +108,7 @@ async function run() {
 
     // Get the latest 6 items sorted by most recent date
     app.get("/latestItems", async (req, res) => {
-      const cursor = itemCollection
-        .find()
-        .sort({ postedAt: -1 }) // Sort by createdAt in descending order
-        .limit(6);
+      const cursor = itemCollection.find().sort({ postedAt: -1 }).limit(6);
       const latestItems = await cursor.toArray();
       res.send(latestItems);
     });
@@ -142,11 +139,14 @@ async function run() {
     app.put("/updateItem/:id", async (req, res) => {
       const itemData = req.body;
       const id = req.params.id;
+
       const updatedDoc = {
         $set: itemData,
       };
+
       const query = { _id: new ObjectId(id) };
       const options = { upsert: true };
+      
       const updatedItem = await itemCollection.updateOne(
         query,
         updatedDoc,
