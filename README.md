@@ -148,7 +148,8 @@ Create a `.env` file in the root directory and add the following:
 
 ```env
 PORT=5000
-
+DB_USER =your_mongodb_username
+DB_PASS =your_mongodb_password
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 FIREBASE_ADMIN_KEY=your_firebase_admin_key
