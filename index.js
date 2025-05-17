@@ -106,12 +106,6 @@ async function run() {
       res.send(allItems);
     });
 
-
-
-
-
-
-    
     // Get the latest 6 items sorted by most recent date
     app.get("/latestItems", async (req, res) => {
       const cursor = itemCollection.find().sort({ postedAt: -1 }).limit(6);
